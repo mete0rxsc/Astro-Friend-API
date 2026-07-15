@@ -29,9 +29,10 @@ Upstash Redis 只保存匿名限流计数，用于限制同一来源每小时最
 
 ## 3. 部署到 Vercel
 
-1. 将本 `Temp` 目录作为一个独立项目上传到 GitHub，或在 Vercel 导入仓库时把 Root Directory 设置为 `Temp`。
-2. Framework Preset 选择 `Other`，Node.js 使用 22.x，不需要 Build Command。
-3. 在 Vercel 项目的 Settings -> Environment Variables 中添加以下五项，并勾选 Production：
+1. 将本 `Temp` 目录的内容作为独立项目上传到 GitHub。如果这些文件已经位于独立仓库根目录，Vercel 的 Root Directory 保持留空；只有从博客主仓库部署时才把 Root Directory 设置为 `Temp`。
+2. Framework Preset 选择 `Other`，不填写 Build Command；Node.js 22.x 由 `package.json` 的 `engines.node` 自动指定。
+3. 不要在 `vercel.json` 的 `functions.runtime` 中填写 `nodejs22.x`。内置 Node.js 函数会由 Vercel 自动识别，该字段只用于带完整版本号的第三方运行时。
+4. 在 Vercel 项目的 Settings -> Environment Variables 中添加以下五项，并勾选 Production：
 
 | 名称 | 填写内容 |
 |---|---|
@@ -41,8 +42,8 @@ Upstash Redis 只保存匿名限流计数，用于限制同一来源每小时最
 | `UPSTASH_REDIS_REST_TOKEN` | Upstash 的 REST Token |
 | `ALLOWED_ORIGINS` | `https://xscnet.cn,https://www.xscnet.cn` |
 
-4. 部署或重新部署项目。新增 `friend-pending` 接口后必须重新部署，环境变量无需增加。
-5. 访问 `https://你的接口域名/api/health`，应返回 `{"ok":true,"service":"friend-apply"}`。
+5. 部署或重新部署项目。环境变量无需增加。
+6. 访问 `https://你的接口域名/api/health`，应返回 `{"ok":true,"service":"friend-apply"}`。
 
 ## 4. 回填博客配置
 
