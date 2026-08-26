@@ -70,9 +70,10 @@ npm test
 
 ## Upstash keepalive
 
-Vercel Cron invokes `GET /api/keepalive` automatically twice every day. The
-schedule `0 0,12 * * *` is UTC, which is 08:00 and 20:00 in China Standard
-Time. The function runs on Vercel and is not called by the blog browser.
+Vercel Cron invokes `GET /api/keepalive` automatically once every day. The
+schedule `0 0 * * *` is UTC, which is 08:00 in China Standard Time. The
+function runs on Vercel and is not called by the blog browser. This schedule
+works on the Hobby plan, whose restriction is one execution per day.
 
 It writes the current timestamp to the separate Redis key
 `friend-apply:keepalive` with a 30-day expiry. This key is independent from
@@ -80,7 +81,7 @@ the friend-apply rate-limit keys and does not consume a user's submission
 quota.
 
 After changing `vercel.json`, redeploy the Vercel Production project. You can
-verify the twice-daily executions in Vercel Production Logs by searching for
+verify the daily executions in Vercel Production Logs by searching for
 `/api/keepalive`. The existing five environment variables are sufficient; no
 additional secret is required.
 
