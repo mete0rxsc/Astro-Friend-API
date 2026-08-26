@@ -74,6 +74,7 @@ test("Turnstile failure is rejected", { concurrency: false }, async () => {
 	await handler(request(), res);
 	assert.equal(res.statusCode, 400);
 	assert.equal(res.body.code, "TURNSTILE_FAILED");
+	assert.match(res.body.message, /如果没有cloudflare验证卡片，请刷新页面/);
 });
 
 test("unknown origin is rejected before external calls", { concurrency: false }, async () => {

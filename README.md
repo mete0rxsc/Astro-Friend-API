@@ -68,4 +68,20 @@ Site Key 可以公开；GitHub Token、Turnstile Secret Key 和 Upstash Token �
 npm test
 ```
 
+## Upstash keepalive
+
+Vercel Cron invokes `GET /api/keepalive` automatically twice every day. The
+schedule `0 0,12 * * *` is UTC, which is 08:00 and 20:00 in China Standard
+Time. The function runs on Vercel and is not called by the blog browser.
+
+It writes the current timestamp to the separate Redis key
+`friend-apply:keepalive` with a 30-day expiry. This key is independent from
+the friend-apply rate-limit keys and does not consume a user's submission
+quota.
+
+After changing `vercel.json`, redeploy the Vercel Production project. You can
+verify the twice-daily executions in Vercel Production Logs by searching for
+`/api/keepalive`. The existing five environment variables are sufficient; no
+additional secret is required.
+
 生产接口只接受两个正式博客来源。不要为了本地调试把 localhost 加入生产环境的 `ALLOWED_ORIGINS`。
