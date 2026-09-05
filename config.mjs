@@ -28,4 +28,18 @@ export default Object.freeze({
 		maxItems: 12,
 		cacheSeconds: 60,
 	},
+	imageUpload: {
+		// 单文件最大字节数（2 MB），评论区贴图不需要大图。
+		maxFileSizeBytes: 2 * 1024 * 1024,
+		rateLimit: {
+			// 同一来源每分钟最多上传 10 次。
+			requests: 10,
+			windowSeconds: 60,
+		},
+		turnstile: {
+			// 评论区上传为高频操作，默认关闭人机验证；如需更严格的防刷可开启。
+			// 开启后前端需要在上传时通过 X-Turnstile-Token 请求头传入 Turnstile token。
+			enabled: false,
+		},
+	},
 });
